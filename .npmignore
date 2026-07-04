@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Build outputs are published via package.json `files`, ignore everything else
+src/
+test/
+dist-test/
+scripts/
+*.tsbuildinfo
+
+# Config
+tsconfig.json
+tsconfig.test.json
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Tests are not part of the published package
+*.test.ts
+*.test.js

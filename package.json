@@ -1,0 +1,96 @@
+{
+  "name": "@carrilloapps/docgraph",
+  "version": "1.0.0",
+  "description": "Universal documentation knowledge-graph MCP server with hybrid full-text + vector search.",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": {
+    "name": "Junior Carrillo",
+    "email": "m@carrillo.app",
+    "url": "https://carrillo.app"
+  },
+  "homepage": "https://github.com/carrilloapps/docgraph#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carrilloapps/docgraph.git"
+  },
+  "bugs": {
+    "url": "https://github.com/carrilloapps/docgraph/issues"
+  },
+  "funding": {
+    "type": "buymeacoffee",
+    "url": "https://www.buymeacoffee.com/carrilloapps"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "documentation",
+    "knowledge-graph",
+    "rag",
+    "semantic-search",
+    "full-text-search",
+    "embeddings",
+    "vector-search",
+    "sqlite",
+    "fts5",
+    "claude",
+    "opencode",
+    "cli"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "docgraph": "dist/presentation/cli/cli.js",
+    "docgraph-mcp": "dist/presentation/mcp/server.js",
+    "docgraph-install": "dist/presentation/installer/installer.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "settings.example.json"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "clean": "node -e \"const {rmSync}=require('fs');rmSync('dist',{recursive:true,force:true});rmSync('dist-test',{recursive:true,force:true})\"",
+    "build": "npm run clean && tsc",
+    "build:test": "tsc -p tsconfig.test.json",
+    "typecheck": "tsc --noEmit",
+    "pretest": "npm run build:test",
+    "test": "node scripts/test.mjs",
+    "benchmark": "node scripts/benchmark.js",
+    "install:agents": "node dist/presentation/installer/installer.js",
+    "start": "node dist/presentation/mcp/server.js serve",
+    "serve": "node dist/presentation/mcp/server.js serve",
+    "index": "node dist/presentation/cli/cli.js index",
+    "search": "node dist/presentation/cli/cli.js search",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.0.0",
+    "chokidar": "^3.6.0",
+    "gray-matter": "^4.0.3",
+    "minimatch": "^9.0.0",
+    "toml": "^3.0.0",
+    "yaml": "^2.4.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.10",
+    "@types/node": "^20.14.0",
+    "typescript": "^5.4.5"
+  }
+}

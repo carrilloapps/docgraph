@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "docgraph": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "-p",
+        "@carrilloapps/docgraph",
+        "docgraph-mcp",
+        "serve"
+      ],
+      "type": "stdio"
+    }
+  }
+}

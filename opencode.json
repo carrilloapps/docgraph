@@ -1,0 +1,16 @@
+{
+  "mcp": {
+    "docgraph": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "-p",
+        "@carrilloapps/docgraph",
+        "docgraph-mcp",
+        "serve"
+      ],
+      "enabled": true
+    }
+  }
+}

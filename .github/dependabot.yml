@@ -1,0 +1,45 @@
+version: 2
+
+# LTS / security-first posture.
+#
+# Dependabot does NOT open routine version-bump PRs here: `open-pull-requests-limit: 0`
+# disables version updates for the ecosystem. What it still raises are
+# *security updates* — PRs that fix a dependency flagged by a GitHub Security
+# Advisory. Those are event-driven (created when an advisory is published, not
+# on the schedule) and are explicitly unaffected by the open-PR limit.
+#
+# Requirement: "Dependabot security updates" must be enabled for the repo under
+#   Settings > Advanced Security (Code security) > Dependabot
+# otherwise no PRs are created at all.
+#
+# Cadence note: Dependabot only supports daily/weekly/monthly intervals — there
+# is no native 15-day cadence, so `monthly` is used to keep churn low (LTS).
+# The interval only governs how often Dependabot re-checks/rebases; security
+# PRs themselves land as soon as an advisory is published, regardless of it.
+#
+# Major versions are intentionally NOT ignored: an LTS posture avoids routine
+# churn (handled by the limit above), but a critical security fix must still be
+# allowed through even when it only ships in a new major.
+
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 0
+    labels:
+      - security
+      - dependencies
+    commit-message:
+      prefix: "fix(security)"
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 0
+    labels:
+      - security
+      - ci
+    commit-message:
+      prefix: "fix(security)"

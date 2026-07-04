@@ -1,0 +1,84 @@
+{
+  "runs": [
+    {
+      "scenario": "astro",
+      "query": "How do you build a custom integration with Astro hooks?",
+      "withTool": {
+        "latencyMs": 138,
+        "hits": 0
+      },
+      "baseline": {
+        "latencyMs": 199,
+        "hits": 64341,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "astro",
+      "query": "What is the difference between server-side and client-side rendering?",
+      "withTool": {
+        "latencyMs": 138,
+        "hits": 0
+      },
+      "baseline": {
+        "latencyMs": 171,
+        "hits": 9337,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "astro",
+      "query": "How do you migrate from Astro v3 to v4?",
+      "withTool": {
+        "latencyMs": 134,
+        "hits": 0
+      },
+      "baseline": {
+        "latencyMs": 163,
+        "hits": 59196,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    }
+  ],
+  "summary": [
+    {
+      "scenario": "astro",
+      "query": "How do you build a custom integration with Astro hooks?",
+      "medianLatencyDeltaMs": -61,
+      "medianHitsWith": 0,
+      "medianHitsBaseline": 64341,
+      "hitDelta": -64341,
+      "baselineMethod": "git grep"
+    },
+    {
+      "scenario": "astro",
+      "query": "What is the difference between server-side and client-side rendering?",
+      "medianLatencyDeltaMs": -33,
+      "medianHitsWith": 0,
+      "medianHitsBaseline": 9337,
+      "hitDelta": -9337,
+      "baselineMethod": "git grep"
+    },
+    {
+      "scenario": "astro",
+      "query": "How do you migrate from Astro v3 to v4?",
+      "medianLatencyDeltaMs": -29,
+      "medianHitsWith": 0,
+      "medianHitsBaseline": 59196,
+      "hitDelta": -59196,
+      "baselineMethod": "git grep"
+    }
+  ]
+}
