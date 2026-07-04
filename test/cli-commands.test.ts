@@ -2,7 +2,7 @@ import { describe, it, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { mkdtempSync, mkdirSync, writeFileSync, existsSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, existsSync, rmSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 
@@ -178,5 +178,28 @@ describe('CLI end-to-end', () => {
   it('DOCGRAPH_READ_ONLY=1 forbids write commands (reindex)', () => {
     const { status } = runCli(['reindex', `--path=${fixture}`], { DOCGRAPH_READ_ONLY: '1' });
     assert.notEqual(status, 0, 'reindex should refuse under DOCGRAPH_READ_ONLY=1');
+  });
+
+  it('short command alias `s` resolves to search', () => {
+    const { status, stdout } = runCli(['s', 'authentication', `--path=${fixture}`]);
+    assert.equal(status, 0);
+    assert.ok(stdout.trim().length > 0);
+  });
+
+  it('short command alias `st` resolves to stats', () => {
+    const { status, stdout } = runCli(['st', `--path=${fixture}`]);
+    assert.equal(status, 0);
+    assert.match(stdout, /[Dd]ocuments/);
+  });
+
+  it('short command alias `ls` resolves to list', () => {
+    assert.equal(runCli(['ls', `--path=${fixture}`]).status, 0);
+  });
+
+  it('package.json exposes both long and short binary aliases', () => {
+    const pkg = JSON.parse(readFileSync(fileURLToPath(new URL('../../package.json', import.meta.url)), 'utf-8'));
+    for (const bin of ['docgraph', 'dg', 'docgraph-mcp', 'dg-mcp', 'docgraph-install', 'dg-install']) {
+      assert.ok(pkg.bin[bin], `missing bin alias: ${bin}`);
+    }
   });
 });

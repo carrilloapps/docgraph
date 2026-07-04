@@ -123,6 +123,30 @@ describe('MCP server end-to-end (stdio JSON-RPC)', () => {
     assert.ok(!res.error, `get_stats errored: ${JSON.stringify(res.error)}`);
   });
 
+  it('the `docgraph mcp` CLI subcommand starts the same server', async () => {
+    const child = spawn(process.execPath, [cliPath, 'mcp'], {
+      env: { ...process.env, DOCGRAPH_PROJECT: fixture, DOCGRAPH_NO_WATCH: '1' },
+    });
+    let stdout = '';
+    const done = new Promise<RpcResponse[]>((resolve) => {
+      child.stdout.on('data', (c) => (stdout += c.toString()));
+      child.on('close', () =>
+        resolve(
+          stdout
+            .split('\n')
+            .map((l) => l.trim())
+            .filter(Boolean)
+            .map((l) => JSON.parse(l) as RpcResponse),
+        ),
+      );
+    });
+    child.stdin.write(JSON.stringify({ jsonrpc: '2.0', id: 9, method: 'initialize', params: {} }) + '\n');
+    child.stdin.end();
+    const [res] = await done;
+    assert.equal(res.id, 9);
+    assert.equal((res.result as { serverInfo?: { name?: string } }).serverInfo?.name, 'docgraph');
+  });
+
   it('read-only mode rejects the index_project write tool', async () => {
     const child = spawn(process.execPath, [serverPath, 'serve', '--read-only'], {
       env: { ...process.env, DOCGRAPH_PROJECT: fixture, DOCGRAPH_NO_WATCH: '1' },

@@ -53,8 +53,31 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const PACKAGE_NAME = '@carrilloapps/docgraph';
 const MCP_LAUNCH = { command: 'npx', args: ['-y', '-p', PACKAGE_NAME, 'docgraph-mcp', 'serve'] };
 
+/**
+ * Short aliases for the most-used subcommands. The canonical (long) name still
+ * works; these are resolved to it before dispatch so both forms behave
+ * identically. Keys must never collide with a real command name.
+ */
+const COMMAND_ALIASES: Record<string, string> = {
+  i: 'index',
+  ri: 'reindex',
+  w: 'watch',
+  s: 'search',
+  q: 'search',
+  ls: 'list',
+  st: 'stats',
+  stj: 'stats-json',
+  src: 'sources',
+  cfg: 'settings',
+  prov: 'providers',
+  ex: 'exclude',
+  imp: 'import',
+  exp: 'export',
+};
+
 async function main(): Promise<void> {
-  const command = process.argv[2];
+  const rawCommand = process.argv[2];
+  const command = rawCommand ? COMMAND_ALIASES[rawCommand] ?? rawCommand : rawCommand;
 
   if (!command || command === 'help' || command === '--help' || command === '-h') {
     printHelp();
@@ -125,6 +148,9 @@ async function main(): Promise<void> {
       break;
     case 'serve':
       runServe();
+      break;
+    case 'mcp':
+      await runMcpServer();
       break;
     default:
       console.error(`Unknown command: ${command}`);
@@ -579,29 +605,30 @@ function printHelp(): void {
   console.log(`
 DocGraph - Universal documentation knowledge graph with hybrid search
 
-Usage: docgraph <command> [options]
+Usage: docgraph <command> [options]     (short binary alias: dg)
 
-Commands:
+Commands (short alias in parentheses):
   init [path]           Set up DocGraph: settings, initial index and MCP config
   install               Wire DocGraph into every detected AI agent (Claude Code, opencode, ...)
   uninstall             Remove DocGraph from every detected AI agent
-  index [path]          Index all documents in the project (local + remote sources)
-  reindex [path]        Clear and re-index all documents
-  watch [path]          Index, then auto-reindex on file changes (autosync)
-  search <query>        Search documents using hybrid (text + vector) search
-  stats [path]          Show index statistics
-  stats-json [path]     Show statistics in JSON format
-  list [path]           List all indexed documents
-  sources [action]      Manage remote sources (list|enable|disable|pull)
+  index [path]     (i)  Index all documents in the project (local + remote sources)
+  reindex [path]   (ri) Clear and re-index all documents
+  watch [path]     (w)  Index, then auto-reindex on file changes (autosync)
+  search <query>   (s)  Search documents using hybrid (text + vector) search
+  stats [path]     (st) Show index statistics
+  stats-json [path](stj) Show statistics in JSON format
+  list [path]      (ls) List all indexed documents
+  sources [action] (src) Manage remote sources (list|enable|disable|pull)
   logs [options]        Read .docgraph/docgraph.log (--tail, --level, --grep, --follow)
   apis [action]         Manage API specs (add|list|remove|enable|disable|pull)
-  import <file>         Import a previously-exported .docgraph.db backup
-  export <file>         Export the current .docgraph.db to a portable file
-  exclude [action]      Manage exclude patterns (list|add|remove|default|gitignore)
+  import <file>    (imp) Import a previously-exported .docgraph.db backup
+  export <file>    (exp) Export the current .docgraph.db to a portable file
+  exclude [action] (ex) Manage exclude patterns (list|add|remove|default|gitignore)
   files                 List supported file extensions
-  settings [action]     Manage settings (show|init|path)
-  providers             List supported embedding providers
+  settings [action](cfg) Manage settings (show|init|path)
+  providers        (prov) List supported embedding providers
   serve [path]          Print MCP server configuration
+  mcp [path]            Run the MCP server over stdio (same as the docgraph-mcp binary)
 
 Search options:
   --limit=n             Maximum results (default: 20)
@@ -697,6 +724,31 @@ async function runInstall(mode: 'install' | 'uninstall'): Promise<void> {
   // Forward --yes for non-interactive invocation.
   if (!process.stdin.isTTY) args.push('--yes');
   const child = spawn(process.execPath, [installerPath, ...args], { stdio: 'inherit' });
+  child.on('exit', (code) => process.exit(code ?? 0));
+}
+
+/**
+ * Run the MCP server through the main CLI so the short form
+ * `npx @carrilloapps/docgraph mcp` works without `-p` or the long
+ * `docgraph-mcp` binary name. Everything after `mcp` (a project path,
+ * `--read-only`, `--no-watch`, ...) is forwarded verbatim, and stdio is
+ * inherited so JSON-RPC flows straight through. The dedicated `docgraph-mcp`
+ * binary remains available and behaves identically.
+ */
+async function runMcpServer(): Promise<void> {
+  const { spawn } = await import('child_process');
+  const serverPath = join(__dirname, '..', 'mcp', 'server.js');
+  const args = process.argv.slice(3);
+  const child = spawn(process.execPath, [serverPath, 'serve', ...args], { stdio: 'inherit' });
+  const forward = (signal: NodeJS.Signals) => {
+    try {
+      child.kill(signal);
+    } catch {
+      // child already gone
+    }
+  };
+  process.on('SIGINT', () => forward('SIGINT'));
+  process.on('SIGTERM', () => forward('SIGTERM'));
   child.on('exit', (code) => process.exit(code ?? 0));
 }
 

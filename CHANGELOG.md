@@ -5,6 +5,24 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-07-04
+
+### Added
+- **Short command forms alongside the long ones.** New binary aliases `dg`,
+  `dg-mcp`, and `dg-install` mirror `docgraph`, `docgraph-mcp`, and
+  `docgraph-install`. A new `docgraph mcp` subcommand runs the MCP server through
+  the main CLI, enabling the short launch `npx -y @carrilloapps/docgraph mcp`
+  (no `-p` / long binary name needed); the dedicated `docgraph-mcp` binary still
+  works identically. Common subcommands gain short aliases: `i` (index),
+  `ri` (reindex), `w` (watch), `s`/`q` (search), `ls` (list), `st` (stats),
+  `stj` (stats-json), `src` (sources), `cfg` (settings), `prov` (providers),
+  `ex` (exclude), `imp` (import), `exp` (export).
+
+### Fixed
+- The MCP server no longer mistakes a leading `--flag` for the project path when
+  arguments are forwarded (e.g. `docgraph mcp --read-only`); positional project
+  detection now skips flags, which also prevents stray flag-named directories.
+
 ## [1.0.0] - 2026-07-04
 
 First public release: a universal documentation knowledge-graph MCP server with
@@ -88,4 +106,5 @@ AI agents.
   non-existent embedding endpoints.
 - Unused dependencies (`marked`, `glob`).
 
+[1.0.1]: https://github.com/carrilloapps/docgraph/releases/tag/v1.0.1
 [1.0.0]: https://github.com/carrilloapps/docgraph/releases/tag/v1.0.0

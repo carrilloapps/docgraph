@@ -9,11 +9,15 @@ Linear, GitHub, and Confluence — into a single SQLite knowledge graph and expo
 over the [Model Context Protocol](https://modelcontextprotocol.io). Works fully offline, no API
 key required.
 
+[![npm version](https://img.shields.io/npm/v/@carrilloapps/docgraph.svg)](https://www.npmjs.com/package/@carrilloapps/docgraph)
+[![npm downloads](https://img.shields.io/npm/dm/@carrilloapps/docgraph.svg)](https://www.npmjs.com/package/@carrilloapps/docgraph)
 [![CI](https://github.com/carrilloapps/docgraph/actions/workflows/ci.yml/badge.svg)](https://github.com/carrilloapps/docgraph/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)](https://www.typescriptlang.org/)
 [![Architecture](https://img.shields.io/badge/architecture-clean-8a2be2.svg)](#%EF%B8%8F-architecture)
+
+📦 **npm:** https://www.npmjs.com/package/@carrilloapps/docgraph
 
 </div>
 
@@ -208,11 +212,14 @@ npm install
 npm run build
 ```
 
-The package installs three binaries:
-- `docgraph` — CLI
-- `docgraph-mcp` — MCP server over stdio
+The package installs three binaries, each with a short alias:
+- `docgraph` — CLI (short: `dg`)
+- `docgraph-mcp` — MCP server over stdio (short: `dg-mcp`; also reachable as `docgraph mcp`)
 - `docgraph-install` — agent auto-installer for all 8 [supported agents](#supported-agents)
-  (Claude Code, Cursor, opencode, Gemini CLI, Codex CLI, Kiro, Antigravity, Hermes)
+  (Claude Code, Cursor, opencode, Gemini CLI, Codex CLI, Kiro, Antigravity, Hermes) (short: `dg-install`)
+
+Every subcommand also has a short alias (e.g. `dg s "query"` = `docgraph search "query"`, `dg i` =
+`docgraph index`, `dg st` = `docgraph stats`) — see [CLI reference](#cli-reference).
 
 Requires **Node.js ≥ 18** on developer machines, or the bundled installer for users.
 
@@ -245,29 +252,33 @@ paths, so it works on any machine and OS.
 ## CLI reference
 
 ```
-docgraph <command> [options]
+docgraph <command> [options]        # or the short binary: dg <command>
 
-Commands:
+Commands (short alias):
   init [path]              One-shot: settings, initial index, per-agent MCP config
   install | uninstall      Wire DocGraph into / remove from every detected AI agent
-  index [path]             Index local files plus every enabled remote source
-  reindex [path]           Clear and re-index
-  watch [path]             Index, then auto-reindex on file changes (autosync)
-  search <query>           Hybrid search (text + vector)
-  stats [path]             Show index statistics
-  stats-json [path]        Show statistics as JSON
-  list [path]              List all indexed documents
-  sources [action]         Manage remote sources (list|enable|disable|pull)
+  index [path]        (i)  Index local files plus every enabled remote source
+  reindex [path]      (ri) Clear and re-index
+  watch [path]        (w)  Index, then auto-reindex on file changes (autosync)
+  search <query>      (s)  Hybrid search (text + vector)   [also: q]
+  stats [path]        (st) Show index statistics
+  stats-json [path]   (stj) Show statistics as JSON
+  list [path]         (ls) List all indexed documents
+  sources [action]    (src) Manage remote sources (list|enable|disable|pull)
   apis [action]            Manage API specs (add|list|remove|enable|disable|pull)
   logs [options]           Read .docgraph/docgraph.log (--tail|--level|--grep|--follow*)
-  export <file>            Export the current .docgraph.db to a portable file
-  import <file>            Import a previously-exported .docgraph.db backup
-  exclude [action]         Manage exclude patterns (list|add|remove|default|gitignore)
+  export <file>       (exp) Export the current .docgraph.db to a portable file
+  import <file>       (imp) Import a previously-exported .docgraph.db backup
+  exclude [action]    (ex) Manage exclude patterns (list|add|remove|default|gitignore)
   files                    List supported file extensions
-  settings [action]        Manage settings (show|init|path)
-  providers                List supported embedding providers
+  settings [action]   (cfg) Manage settings (show|init|path)
+  providers           (prov) List supported embedding providers
   serve [path]             Print MCP server configuration
+  mcp [path]               Run the MCP server over stdio (= the docgraph-mcp binary)
 ```
+
+Long and short forms are interchangeable — `docgraph search "api"`, `dg search "api"`, and
+`dg s "api"` are identical.
 
 `*` `--follow` streams new log entries live as they're written (polling by byte offset, so it
 keeps working no matter how large the file grows) — `Ctrl-C` to stop. `--tail`, `--level`, and
@@ -291,6 +302,19 @@ prints it without touching any files. The launch command is portable — it reso
 installed binary via `npx`, so there are no absolute, machine-specific paths. The project root
 is inferred from the server's working directory, the `DOCGRAPH_PROJECT` env var, or the
 `projectPath` argument every tool accepts.
+
+### Launch forms (short & long)
+
+The server can be started three equivalent ways — use whichever you prefer:
+
+| Form | Command |
+|------|---------|
+| Short (recommended for humans) | `npx -y @carrilloapps/docgraph mcp` |
+| Explicit binary | `npx -y -p @carrilloapps/docgraph docgraph-mcp serve` |
+| Short binary alias | `npx -y -p @carrilloapps/docgraph dg-mcp serve` |
+
+The generated agent configs below use the explicit `docgraph-mcp` binary for maximum robustness;
+the short `mcp` subcommand is a convenience that routes through the main CLI.
 
 **Claude Code** (`.mcp.json`):
 

@@ -10,7 +10,7 @@ import { getPackageVersion } from '../../version.js';
 // Project path is inferred, never hard-coded: an explicit positional argument
 // wins, then the DOCGRAPH_PROJECT env var, then the current working directory
 // (which is the project root when launched as a local MCP server by an agent).
-const positional = process.argv.slice(2).find((a) => a !== 'serve');
+const positional = process.argv.slice(2).find((a) => a !== 'serve' && !a.startsWith('-'));
 const RESOLVED_PROJECT_PATH = resolve(positional || process.env.DOCGRAPH_PROJECT || process.cwd());
 // Canonicalize to the real path (handles Windows 8.3 short names / case) so the
 // autosync watcher and the indexer agree on paths.
