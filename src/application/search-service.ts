@@ -260,6 +260,9 @@ export class SearchService {
     return results.sort((a, b) => b.score - a.score).slice(0, limit);
   }
 
+  /** Cap on snippets returned per document so a common term can't produce hundreds. */
+  private static readonly MAX_MATCHES = 6;
+
   private findMatches(doc: Document, query: string): SearchMatch[] {
     const matches: SearchMatch[] = [];
     const contentLower = doc.content.toLowerCase();
@@ -267,10 +270,11 @@ export class SearchService {
 
     for (const term of queryLower.split(/\s+/).filter(Boolean)) {
       let index = contentLower.indexOf(term);
-      while (index !== -1) {
+      while (index !== -1 && matches.length < SearchService.MAX_MATCHES) {
         matches.push(this.snippetAround(doc, index, term.length));
         index = contentLower.indexOf(term, index + 1);
       }
+      if (matches.length >= SearchService.MAX_MATCHES) break;
     }
 
     if (doc.title?.toLowerCase().includes(queryLower)) {

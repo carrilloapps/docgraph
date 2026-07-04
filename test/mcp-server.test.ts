@@ -119,14 +119,24 @@ describe('MCP server end-to-end (stdio JSON-RPC)', () => {
     return result as { content: { type: string; text: string }[]; structuredContent?: unknown };
   }
 
-  it('tools/call search returns an MCP content result for an indexed term', async () => {
+  it('tools/call search returns lean results (excerpts, not full document bodies)', async () => {
     const [res] = await driveServer(fixture, [
       { jsonrpc: '2.0', id: 3, method: 'tools/call', params: { name: 'search', arguments: { query: 'authentication' } } },
     ]);
     assert.equal(res.id, 3);
     const result = assertCallToolResult(res);
-    // The serialized payload should carry the search results for the project.
-    assert.match(result.content[0].text, /results/);
+    const sc = result.structuredContent as {
+      results?: { path?: string; score?: number; snippets?: unknown[]; document?: unknown; content?: unknown }[];
+    };
+    assert.ok(Array.isArray(sc.results), 'results must be an array');
+    for (const r of sc.results!) {
+      assert.equal(typeof r.path, 'string', 'each result must expose a path');
+      assert.equal(typeof r.score, 'number', 'each result must expose a score');
+      assert.ok(Array.isArray(r.snippets), 'each result must expose snippet excerpts');
+      // The full document body must NOT be embedded — that is what get_document is for.
+      assert.ok(!('document' in r), 'lean result must not embed the full document object');
+      assert.ok(!('content' in r), 'lean result must not embed full content');
+    }
   });
 
   it('tools/call get_stats returns MCP content + structuredContent for the corpus', async () => {

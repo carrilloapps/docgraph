@@ -191,7 +191,15 @@ function cloneRepo(repoUrl, target) {
   }
   mkdirSync(dirname(target), { recursive: true });
   console.log(`Cloning ${repoUrl}...`);
-  const res = spawnSync('git', ['clone', '--depth', '1', repoUrl, target], { stdio: 'inherit' });
+  // `-c core.longpaths=true` lets deeply-nested paths (e.g. react-native's C++
+  // tree) check out on Windows, where the default 260-char MAX_PATH otherwise
+  // aborts the clone with "Filename too long". Scoped to this command so the
+  // user's global git config is untouched. `--single-branch` trims the fetch.
+  const res = spawnSync(
+    'git',
+    ['-c', 'core.longpaths=true', 'clone', '--depth', '1', '--single-branch', repoUrl, target],
+    { stdio: 'inherit' },
+  );
   if (res.error) throw res.error;
   if (res.status !== 0) {
     throw new Error(`git clone failed (exit code ${res.status}) for ${repoUrl}`);
@@ -459,18 +467,34 @@ function main() {
   }
 
   const allResults = [];
+  const failures = [];
   for (const scenario of scenarios) {
     console.log(`\n=== ${scenario.name} (${scenario.description}) ===`);
-    const results = runScenario(scenario, runs);
-    allResults.push(...results);
+    // One scenario failing (network, a repo that won't check out, etc.) must
+    // not abort the whole run — record it and keep going so the report is as
+    // complete as the environment allows.
+    try {
+      const results = runScenario(scenario, runs);
+      allResults.push(...results);
+    } catch (err) {
+      const message = err && err.message ? err.message : String(err);
+      console.error(`  ! scenario "${scenario.name}" failed, skipping: ${message}`);
+      failures.push({ scenario: scenario.name, error: message });
+    }
   }
 
   const summary = aggregateSummary(allResults);
   const outPath = join(BENCH_DIR, 'results.json');
-  writeFileSync(outPath, JSON.stringify({ runs: allResults, summary }, null, 2));
+  writeFileSync(
+    outPath,
+    JSON.stringify({ generatedAt: new Date().toISOString(), runs: allResults, summary, failures }, null, 2),
+  );
   console.log(`\nWrote ${outPath}`);
 
   printSummaryTable(summary);
+  if (failures.length > 0) {
+    console.log(`\n${failures.length} scenario(s) failed: ${failures.map((f) => f.scenario).join(', ')}`);
+  }
 }
 
 try {

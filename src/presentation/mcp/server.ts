@@ -6,6 +6,7 @@ import { ProjectRegistry } from '../../project-registry.js';
 import { LocalLogger } from '../../infrastructure/logging/local-logger.js';
 import { hasReadOnlyFlagOrEnv } from '../cli/args.js';
 import { getPackageVersion } from '../../version.js';
+import type { SearchResult } from '../../domain/entities.js';
 
 // Project path is inferred, never hard-coded: an explicit positional argument
 // wins, then the DOCGRAPH_PROJECT env var, then the current working directory
@@ -78,6 +79,26 @@ function sendToolResult(id: string | number, data: unknown): void {
     result.structuredContent = data as object;
   }
   sendResponse(id, result);
+}
+
+/**
+ * Compact a SearchResult for MCP output: document identity, score, and a few
+ * short snippet excerpts — never the full document body, which would balloon a
+ * multi-result response to tens of thousands of tokens. Clients fetch the full
+ * text on demand via `get_document`.
+ */
+function toLeanResult(r: SearchResult) {
+  return {
+    id: r.document.id,
+    path: r.document.relativePath,
+    title: r.document.title,
+    language: r.document.language,
+    extension: r.document.extension,
+    score: Math.round(r.score * 10000) / 10000,
+    snippets: (r.matches ?? [])
+      .slice(0, 3)
+      .map((m) => ({ field: m.field, line: m.lineNumber, text: m.snippet.slice(0, 240) })),
+  };
 }
 
 /**
@@ -253,12 +274,17 @@ async function handleToolCall(id: string | number, name: string, args: any): Pro
           tags: args.tags,
           fuzzyMatch: args.fuzzy || false,
         });
-        sendToolResult(id, { projectPath: app.projectPath, results });
+        sendToolResult(id, { projectPath: app.projectPath, count: results.length, results: results.map(toLeanResult) });
         break;
       }
       case 'explore': {
         const results = await app.search.explore(args.topic, args.limit || 10);
-        sendToolResult(id, { projectPath: app.projectPath, topic: args.topic, results });
+        sendToolResult(id, {
+          projectPath: app.projectPath,
+          topic: args.topic,
+          count: results.length,
+          results: results.map(toLeanResult),
+        });
         break;
       }
       case 'get_document': {
@@ -272,7 +298,7 @@ async function handleToolCall(id: string | number, name: string, args: any): Pro
       }
       case 'get_related': {
         const results = await app.search.getRelated(args.documentId, args.limit || 10);
-        sendToolResult(id, { projectPath: app.projectPath, results });
+        sendToolResult(id, { projectPath: app.projectPath, count: results.length, results: results.map(toLeanResult) });
         break;
       }
       case 'get_stats': {

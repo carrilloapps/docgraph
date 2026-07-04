@@ -9,6 +9,9 @@ dist-test/
 # DocGraph index (generated per project)
 .docgraph/
 
+# Benchmark scenario checkouts (cloned repos; only results.json is committed)
+benchmarks/checkouts/
+
 # Logs
 *.log
 npm-debug.log*

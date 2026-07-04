@@ -54,3 +54,22 @@ test('getEffectiveExcludePatterns includes defaults and custom patterns', () => 
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test('gitignore negation (!) rules are dropped, never turned into exclude patterns', () => {
+  // A leading `!` passed to minimatch as an exclude pattern matches EVERYTHING
+  // except the pattern, which would exclude the whole project and index zero
+  // documents. Negations must be skipped; a leading `/` is normalized.
+  const dir = mkdtempSync(join(tmpdir(), 'docgraph-gitignore-'));
+  try {
+    writeFileSync(join(dir, '.gitignore'), 'node_modules\n.vscode/*\n!.vscode/settings.json\n/dist\n');
+    const settings = loadSettings(dir);
+    settings.exclude.useGitignore = true;
+    const patterns = getEffectiveExcludePatterns(settings, dir);
+    assert.ok(!patterns.some((p) => p.startsWith('!')), 'no pattern may start with "!" (would match-all)');
+    assert.ok(patterns.includes('node_modules'), 'plain gitignore entries are kept');
+    assert.ok(patterns.includes('dist'), 'leading-slash entries are normalized to relative');
+    assert.ok(!patterns.includes('/dist'), 'the anchored form must be normalized away');
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

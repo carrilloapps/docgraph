@@ -556,11 +556,20 @@ function readGitignorePatterns(projectPath?: string): string[] {
       const lines = content.split('\n');
       for (const line of lines) {
         const trimmed = line.trim();
-        if (trimmed && !trimmed.startsWith('#')) {
-          patterns.push(trimmed);
-          if (!trimmed.endsWith('/') && !trimmed.includes('*')) {
-            patterns.push(trimmed + '/**');
-          }
+        if (!trimmed || trimmed.startsWith('#')) continue;
+        // Skip negation (re-include) rules. These are passed to minimatch as
+        // exclude patterns, and a leading `!` makes minimatch match EVERYTHING
+        // except the pattern — which would exclude the entire project and index
+        // zero documents. DocGraph does not support gitignore re-inclusion, so
+        // dropping these is both safe and correct.
+        if (trimmed.startsWith('!')) continue;
+        // Normalize a leading slash (gitignore "anchored to root") to a relative
+        // path so it matches how paths are compared in `shouldExclude`.
+        const pattern = trimmed.startsWith('/') ? trimmed.slice(1) : trimmed;
+        if (!pattern) continue;
+        patterns.push(pattern);
+        if (!pattern.endsWith('/') && !pattern.includes('*')) {
+          patterns.push(pattern + '/**');
         }
       }
     } catch {

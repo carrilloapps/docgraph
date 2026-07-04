@@ -5,6 +5,32 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2026-07-04
+
+### Fixed
+- **Gitignore negation rules no longer wipe the whole index.** A `.gitignore`
+  containing a re-include rule (a line starting with `!`, e.g. `!.vscode/settings.json`)
+  was passed verbatim to `minimatch` as an exclude pattern; a leading `!` makes
+  minimatch match *everything except* that pattern, so the entire project was
+  excluded and **zero documents were indexed**. Negation lines are now skipped
+  (DocGraph does not support gitignore re-inclusion), and a leading `/` on an
+  anchored entry is normalized to a relative path. Repositories whose `.gitignore`
+  uses `!` (very common) now index correctly.
+
+## [1.0.3] - 2026-07-04
+
+### Changed
+- **MCP `search`/`explore`/`get_related` now return lean, excerpt-based results.**
+  Previously each result carried the entire matched document body, so a handful of
+  hits could serialize to 100k+ characters and blow an agent's context. Results now
+  expose `{ id, path, title, language, extension, score, snippets }` — the top few
+  short excerpts (the fragments the embeddings index) — plus a `count`. Full document
+  text is fetched on demand via `get_document`.
+
+### Fixed
+- `SearchService.findMatches` no longer emits one snippet per occurrence of a term
+  (a common word could produce hundreds); it caps at 6 excerpts per document.
+
 ## [1.0.2] - 2026-07-04
 
 ### Fixed
@@ -118,6 +144,8 @@ AI agents.
   non-existent embedding endpoints.
 - Unused dependencies (`marked`, `glob`).
 
+[1.0.4]: https://github.com/carrilloapps/docgraph/releases/tag/v1.0.4
+[1.0.3]: https://github.com/carrilloapps/docgraph/releases/tag/v1.0.3
 [1.0.2]: https://github.com/carrilloapps/docgraph/releases/tag/v1.0.2
 [1.0.1]: https://github.com/carrilloapps/docgraph/releases/tag/v1.0.1
 [1.0.0]: https://github.com/carrilloapps/docgraph/releases/tag/v1.0.0
