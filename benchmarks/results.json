@@ -1,14 +1,491 @@
 {
+  "generatedAt": "2026-07-04T19:04:43.473Z",
   "runs": [
+    {
+      "scenario": "react-native",
+      "query": "How do you create a native module in the new architecture?",
+      "withTool": {
+        "latencyMs": 1417,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 1196,
+        "hits": 78903,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "react-native",
+      "query": "What is the Hermes engine and how does it improve startup?",
+      "withTool": {
+        "latencyMs": 1446,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 346,
+        "hits": 4316,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "react-native",
+      "query": "How does the bridge work between JavaScript and native code?",
+      "withTool": {
+        "latencyMs": 1382,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 2652,
+        "hits": 83026,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "react-native",
+      "query": "How do you set up TurboModules in a fresh project?",
+      "withTool": {
+        "latencyMs": 1375,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 191,
+        "hits": 4979,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "react-native",
+      "query": "How do you create a native module in the new architecture?",
+      "withTool": {
+        "latencyMs": 1434,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 1158,
+        "hits": 78903,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "react-native",
+      "query": "What is the Hermes engine and how does it improve startup?",
+      "withTool": {
+        "latencyMs": 1421,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 321,
+        "hits": 4316,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "react-native",
+      "query": "How does the bridge work between JavaScript and native code?",
+      "withTool": {
+        "latencyMs": 1347,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 2623,
+        "hits": 83026,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "react-native",
+      "query": "How do you set up TurboModules in a fresh project?",
+      "withTool": {
+        "latencyMs": 1371,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 186,
+        "hits": 4979,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "react-native",
+      "query": "How do you create a native module in the new architecture?",
+      "withTool": {
+        "latencyMs": 1411,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 1176,
+        "hits": 78903,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "react-native",
+      "query": "What is the Hermes engine and how does it improve startup?",
+      "withTool": {
+        "latencyMs": 1410,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 317,
+        "hits": 4316,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "react-native",
+      "query": "How does the bridge work between JavaScript and native code?",
+      "withTool": {
+        "latencyMs": 1341,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 2591,
+        "hits": 83026,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "react-native",
+      "query": "How do you set up TurboModules in a fresh project?",
+      "withTool": {
+        "latencyMs": 1374,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 193,
+        "hits": 4979,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "react-native",
+      "query": "How do you create a native module in the new architecture?",
+      "withTool": {
+        "latencyMs": 1397,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 1178,
+        "hits": 78903,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "react-native",
+      "query": "What is the Hermes engine and how does it improve startup?",
+      "withTool": {
+        "latencyMs": 1413,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 315,
+        "hits": 4316,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "react-native",
+      "query": "How does the bridge work between JavaScript and native code?",
+      "withTool": {
+        "latencyMs": 1358,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 2600,
+        "hits": 83026,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "react-native",
+      "query": "How do you set up TurboModules in a fresh project?",
+      "withTool": {
+        "latencyMs": 1390,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 185,
+        "hits": 4979,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "supabase-js",
+      "query": "How do you authenticate users with email and password?",
+      "withTool": {
+        "latencyMs": 281,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 31,
+        "hits": 2486,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "supabase-js",
+      "query": "What realtime subscription patterns are supported?",
+      "withTool": {
+        "latencyMs": 277,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 50,
+        "hits": 1511,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "supabase-js",
+      "query": "How do you run a complex query against the Postgrest API?",
+      "withTool": {
+        "latencyMs": 296,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 92,
+        "hits": 3354,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "supabase-js",
+      "query": "How do you authenticate users with email and password?",
+      "withTool": {
+        "latencyMs": 284,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 32,
+        "hits": 2486,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "supabase-js",
+      "query": "What realtime subscription patterns are supported?",
+      "withTool": {
+        "latencyMs": 273,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 49,
+        "hits": 1511,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "supabase-js",
+      "query": "How do you run a complex query against the Postgrest API?",
+      "withTool": {
+        "latencyMs": 292,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 92,
+        "hits": 3354,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "supabase-js",
+      "query": "How do you authenticate users with email and password?",
+      "withTool": {
+        "latencyMs": 284,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 32,
+        "hits": 2486,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "supabase-js",
+      "query": "What realtime subscription patterns are supported?",
+      "withTool": {
+        "latencyMs": 279,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 52,
+        "hits": 1511,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "supabase-js",
+      "query": "How do you run a complex query against the Postgrest API?",
+      "withTool": {
+        "latencyMs": 290,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 93,
+        "hits": 3354,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "supabase-js",
+      "query": "How do you authenticate users with email and password?",
+      "withTool": {
+        "latencyMs": 287,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 30,
+        "hits": 2486,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "supabase-js",
+      "query": "What realtime subscription patterns are supported?",
+      "withTool": {
+        "latencyMs": 280,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 53,
+        "hits": 1511,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "supabase-js",
+      "query": "How do you run a complex query against the Postgrest API?",
+      "withTool": {
+        "latencyMs": 296,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 92,
+        "hits": 3354,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
     {
       "scenario": "astro",
       "query": "How do you build a custom integration with Astro hooks?",
       "withTool": {
-        "latencyMs": 138,
-        "hits": 0
+        "latencyMs": 165,
+        "hits": 5
       },
       "baseline": {
-        "latencyMs": 199,
+        "latencyMs": 206,
         "hits": 64341,
         "method": "git grep"
       },
@@ -21,11 +498,11 @@
       "scenario": "astro",
       "query": "What is the difference between server-side and client-side rendering?",
       "withTool": {
-        "latencyMs": 138,
-        "hits": 0
+        "latencyMs": 167,
+        "hits": 5
       },
       "baseline": {
-        "latencyMs": 171,
+        "latencyMs": 181,
         "hits": 9337,
         "method": "git grep"
       },
@@ -38,11 +515,164 @@
       "scenario": "astro",
       "query": "How do you migrate from Astro v3 to v4?",
       "withTool": {
-        "latencyMs": 134,
-        "hits": 0
+        "latencyMs": 161,
+        "hits": 5
       },
       "baseline": {
+        "latencyMs": 169,
+        "hits": 59196,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "astro",
+      "query": "How do you build a custom integration with Astro hooks?",
+      "withTool": {
         "latencyMs": 163,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 203,
+        "hits": 64341,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "astro",
+      "query": "What is the difference between server-side and client-side rendering?",
+      "withTool": {
+        "latencyMs": 170,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 177,
+        "hits": 9337,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "astro",
+      "query": "How do you migrate from Astro v3 to v4?",
+      "withTool": {
+        "latencyMs": 159,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 170,
+        "hits": 59196,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "astro",
+      "query": "How do you build a custom integration with Astro hooks?",
+      "withTool": {
+        "latencyMs": 177,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 209,
+        "hits": 64341,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "astro",
+      "query": "What is the difference between server-side and client-side rendering?",
+      "withTool": {
+        "latencyMs": 163,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 182,
+        "hits": 9337,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "astro",
+      "query": "How do you migrate from Astro v3 to v4?",
+      "withTool": {
+        "latencyMs": 170,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 169,
+        "hits": 59196,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "astro",
+      "query": "How do you build a custom integration with Astro hooks?",
+      "withTool": {
+        "latencyMs": 166,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 207,
+        "hits": 64341,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "astro",
+      "query": "What is the difference between server-side and client-side rendering?",
+      "withTool": {
+        "latencyMs": 161,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 169,
+        "hits": 9337,
+        "method": "git grep"
+      },
+      "toolCalls": {
+        "withTool": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "scenario": "astro",
+      "query": "How do you migrate from Astro v3 to v4?",
+      "withTool": {
+        "latencyMs": 171,
+        "hits": 5
+      },
+      "baseline": {
+        "latencyMs": 165,
         "hits": 59196,
         "method": "git grep"
       },
@@ -54,31 +684,95 @@
   ],
   "summary": [
     {
+      "scenario": "react-native",
+      "query": "How do you create a native module in the new architecture?",
+      "medianLatencyDeltaMs": 228,
+      "medianHitsWith": 5,
+      "medianHitsBaseline": 78903,
+      "hitDelta": -78898,
+      "baselineMethod": "git grep"
+    },
+    {
+      "scenario": "react-native",
+      "query": "What is the Hermes engine and how does it improve startup?",
+      "medianLatencyDeltaMs": 1099,
+      "medianHitsWith": 5,
+      "medianHitsBaseline": 4316,
+      "hitDelta": -4311,
+      "baselineMethod": "git grep"
+    },
+    {
+      "scenario": "react-native",
+      "query": "How does the bridge work between JavaScript and native code?",
+      "medianLatencyDeltaMs": -1260,
+      "medianHitsWith": 5,
+      "medianHitsBaseline": 83026,
+      "hitDelta": -83021,
+      "baselineMethod": "git grep"
+    },
+    {
+      "scenario": "react-native",
+      "query": "How do you set up TurboModules in a fresh project?",
+      "medianLatencyDeltaMs": 1185,
+      "medianHitsWith": 5,
+      "medianHitsBaseline": 4979,
+      "hitDelta": -4974,
+      "baselineMethod": "git grep"
+    },
+    {
+      "scenario": "supabase-js",
+      "query": "How do you authenticate users with email and password?",
+      "medianLatencyDeltaMs": 252,
+      "medianHitsWith": 5,
+      "medianHitsBaseline": 2486,
+      "hitDelta": -2481,
+      "baselineMethod": "git grep"
+    },
+    {
+      "scenario": "supabase-js",
+      "query": "What realtime subscription patterns are supported?",
+      "medianLatencyDeltaMs": 227,
+      "medianHitsWith": 5,
+      "medianHitsBaseline": 1511,
+      "hitDelta": -1506,
+      "baselineMethod": "git grep"
+    },
+    {
+      "scenario": "supabase-js",
+      "query": "How do you run a complex query against the Postgrest API?",
+      "medianLatencyDeltaMs": 202,
+      "medianHitsWith": 5,
+      "medianHitsBaseline": 3354,
+      "hitDelta": -3349,
+      "baselineMethod": "git grep"
+    },
+    {
       "scenario": "astro",
       "query": "How do you build a custom integration with Astro hooks?",
-      "medianLatencyDeltaMs": -61,
-      "medianHitsWith": 0,
+      "medianLatencyDeltaMs": -40,
+      "medianHitsWith": 5,
       "medianHitsBaseline": 64341,
-      "hitDelta": -64341,
+      "hitDelta": -64336,
       "baselineMethod": "git grep"
     },
     {
       "scenario": "astro",
       "query": "What is the difference between server-side and client-side rendering?",
-      "medianLatencyDeltaMs": -33,
-      "medianHitsWith": 0,
+      "medianLatencyDeltaMs": -11,
+      "medianHitsWith": 5,
       "medianHitsBaseline": 9337,
-      "hitDelta": -9337,
+      "hitDelta": -9332,
       "baselineMethod": "git grep"
     },
     {
       "scenario": "astro",
       "query": "How do you migrate from Astro v3 to v4?",
-      "medianLatencyDeltaMs": -29,
-      "medianHitsWith": 0,
+      "medianLatencyDeltaMs": -3,
+      "medianHitsWith": 5,
       "medianHitsBaseline": 59196,
-      "hitDelta": -59196,
+      "hitDelta": -59191,
       "baselineMethod": "git grep"
     }
-  ]
+  ],
+  "failures": []
 }
