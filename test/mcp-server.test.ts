@@ -106,21 +106,38 @@ describe('MCP server end-to-end (stdio JSON-RPC)', () => {
     }
   });
 
-  it('tools/call search returns results for an indexed term', async () => {
+  // Every tool result MUST be a well-formed MCP CallToolResult: a `content`
+  // array carrying at least one text block. A raw object without `content`
+  // renders as empty in MCP clients (Claude Code), which was a real regression.
+  function assertCallToolResult(res: RpcResponse): { content: { type: string; text: string }[]; structuredContent?: unknown } {
+    assert.ok(!res.error, `tool errored: ${JSON.stringify(res.error)}`);
+    const result = res.result as { content?: { type: string; text: string }[]; structuredContent?: unknown };
+    assert.ok(Array.isArray(result.content), 'MCP tool result must have a content array');
+    assert.ok(result.content.length > 0, 'content must have at least one block');
+    assert.equal(result.content[0].type, 'text');
+    assert.ok(result.content[0].text.length > 0, 'text block must be non-empty');
+    return result as { content: { type: string; text: string }[]; structuredContent?: unknown };
+  }
+
+  it('tools/call search returns an MCP content result for an indexed term', async () => {
     const [res] = await driveServer(fixture, [
       { jsonrpc: '2.0', id: 3, method: 'tools/call', params: { name: 'search', arguments: { query: 'authentication' } } },
     ]);
     assert.equal(res.id, 3);
-    assert.ok(!res.error, `search errored: ${JSON.stringify(res.error)}`);
-    assert.ok(res.result, 'expected a search result');
+    const result = assertCallToolResult(res);
+    // The serialized payload should carry the search results for the project.
+    assert.match(result.content[0].text, /results/);
   });
 
-  it('tools/call get_stats reports the indexed corpus', async () => {
+  it('tools/call get_stats returns MCP content + structuredContent for the corpus', async () => {
     const [res] = await driveServer(fixture, [
       { jsonrpc: '2.0', id: 4, method: 'tools/call', params: { name: 'get_stats', arguments: {} } },
     ]);
     assert.equal(res.id, 4);
-    assert.ok(!res.error, `get_stats errored: ${JSON.stringify(res.error)}`);
+    const result = assertCallToolResult(res);
+    const stats = (result.structuredContent as { stats?: { totalDocuments?: number } })?.stats;
+    assert.ok(stats && typeof stats.totalDocuments === 'number', 'structuredContent.stats.totalDocuments expected');
+    assert.ok(stats.totalDocuments > 0, 'expected at least one indexed document');
   });
 
   it('the `docgraph mcp` CLI subcommand starts the same server', async () => {

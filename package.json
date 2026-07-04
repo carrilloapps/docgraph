@@ -1,6 +1,6 @@
 {
   "name": "@carrilloapps/docgraph",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Universal documentation knowledge-graph MCP server with hybrid full-text + vector search.",
   "type": "module",
   "license": "MIT",

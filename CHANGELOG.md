@@ -5,6 +5,18 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-07-04
+
+### Fixed
+- **MCP tool results now render in clients.** `tools/call` responses were sent as
+  raw objects (e.g. `{ projectPath, stats }`) instead of MCP's required
+  `CallToolResult` shape, so Claude Code and other MCP clients showed empty output
+  for every tool (`search`, `explore`, `get_stats`, `list_documents`, …) even
+  though the data was computed correctly. Results are now wrapped in a
+  `content: [{ type: "text", text }]` block, with the original object also attached
+  as `structuredContent`. Protocol responses (`initialize`, `tools/list`,
+  `resources/*`) are unchanged.
+
 ## [1.0.1] - 2026-07-04
 
 ### Added
@@ -106,5 +118,6 @@ AI agents.
   non-existent embedding endpoints.
 - Unused dependencies (`marked`, `glob`).
 
+[1.0.2]: https://github.com/carrilloapps/docgraph/releases/tag/v1.0.2
 [1.0.1]: https://github.com/carrilloapps/docgraph/releases/tag/v1.0.1
 [1.0.0]: https://github.com/carrilloapps/docgraph/releases/tag/v1.0.0

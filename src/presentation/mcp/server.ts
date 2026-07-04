@@ -63,6 +63,24 @@ function sendError(id: string | number, code: number, message: string, data?: un
 }
 
 /**
+ * Send a `tools/call` result in MCP's `CallToolResult` shape. The MCP spec
+ * requires tool results to carry a `content` array (clients render the text
+ * blocks); a raw object as `result` shows as empty in Claude Code and other
+ * clients. The pretty-printed JSON goes in a text block, and the original
+ * object is also attached as `structuredContent` for clients that consume it.
+ */
+function sendToolResult(id: string | number, data: unknown): void {
+  const text = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+  const result: { content: { type: 'text'; text: string }[]; structuredContent?: object } = {
+    content: [{ type: 'text', text }],
+  };
+  if (data && typeof data === 'object' && !Array.isArray(data)) {
+    result.structuredContent = data as object;
+  }
+  sendResponse(id, result);
+}
+
+/**
  * Tools exposed over MCP. Each tool that hits the docstore accepts an optional
  * `projectPath` (defaults to the inferred project root) so one MCP process can
  * serve many indexed projects — the same model codegraph uses.
@@ -214,7 +232,7 @@ async function handleToolCall(id: string | number, name: string, args: any): Pro
           break;
         }
         const result = await app.indexing.indexProject();
-        sendResponse(id, { success: true, projectPath: app.projectPath, ...result, stats: app.query.getStats() });
+        sendToolResult(id, { success: true, projectPath: app.projectPath, ...result, stats: app.query.getStats() });
         break;
       }
       case 'index_file': {
@@ -223,7 +241,7 @@ async function handleToolCall(id: string | number, name: string, args: any): Pro
           break;
         }
         const result = await app.indexing.indexFile(args.path);
-        sendResponse(id, { success: !!result, projectPath: app.projectPath, ...result });
+        sendToolResult(id, { success: !!result, projectPath: app.projectPath, ...result });
         break;
       }
       case 'search': {
@@ -235,12 +253,12 @@ async function handleToolCall(id: string | number, name: string, args: any): Pro
           tags: args.tags,
           fuzzyMatch: args.fuzzy || false,
         });
-        sendResponse(id, { projectPath: app.projectPath, results });
+        sendToolResult(id, { projectPath: app.projectPath, results });
         break;
       }
       case 'explore': {
         const results = await app.search.explore(args.topic, args.limit || 10);
-        sendResponse(id, { projectPath: app.projectPath, topic: args.topic, results });
+        sendToolResult(id, { projectPath: app.projectPath, topic: args.topic, results });
         break;
       }
       case 'get_document': {
@@ -249,16 +267,16 @@ async function handleToolCall(id: string | number, name: string, args: any): Pro
           : args.path
             ? app.query.getDocumentByPath(args.path)
             : null;
-        sendResponse(id, { projectPath: app.projectPath, document: doc });
+        sendToolResult(id, { projectPath: app.projectPath, document: doc });
         break;
       }
       case 'get_related': {
         const results = await app.search.getRelated(args.documentId, args.limit || 10);
-        sendResponse(id, { projectPath: app.projectPath, results });
+        sendToolResult(id, { projectPath: app.projectPath, results });
         break;
       }
       case 'get_stats': {
-        sendResponse(id, { projectPath: app.projectPath, stats: app.query.getStats() });
+        sendToolResult(id, { projectPath: app.projectPath, stats: app.query.getStats() });
         break;
       }
       case 'list_documents': {
@@ -267,7 +285,7 @@ async function handleToolCall(id: string | number, name: string, args: any): Pro
           language: args.language,
           limit: args.limit || 100,
         });
-        sendResponse(id, {
+        sendToolResult(id, {
           projectPath: app.projectPath,
           documents: docs.map((d) => ({
             id: d.id,
@@ -284,12 +302,12 @@ async function handleToolCall(id: string | number, name: string, args: any): Pro
         break;
       }
       case 'get_document_graph': {
-        sendResponse(id, { projectPath: app.projectPath, graph: app.query.getDocumentGraph(args.documentId) });
+        sendToolResult(id, { projectPath: app.projectPath, graph: app.query.getDocumentGraph(args.documentId) });
         break;
       }
       case 'list_projects': {
         const projects = Array.from((registry as any).cache?.keys() ?? []);
-        sendResponse(id, { projects, defaultProject: DEFAULT_PROJECT_PATH, readOnly: SERVER_READ_ONLY });
+        sendToolResult(id, { projects, defaultProject: DEFAULT_PROJECT_PATH, readOnly: SERVER_READ_ONLY });
         break;
       }
       default:
